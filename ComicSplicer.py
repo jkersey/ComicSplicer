@@ -1,4 +1,3 @@
-# OUTPUT SETTINGS
 import getopt
 import os
 import sys
@@ -40,7 +39,6 @@ class ComicSplicer:
         self.process_pages()
         self.process_cover()
 
-
     def process_pages(self):
 
         files = self.get_page_list()
@@ -52,14 +50,7 @@ class ComicSplicer:
         self.splice_all_pages(files)
 
     def process_cover(self):
-
-        files = self.get_page_list()
-        extra_pages = len(files) % 4
-        if extra_pages:
-            print("warning: number of pages is not divisible by 4")
-            print("bailing out.")
-            sys.exit(2)
-        self.splice_all_pages(files)
+        pass
 
     def splice_all_pages(self, files):
 
@@ -71,7 +62,7 @@ class ComicSplicer:
                 a, b = i, -(i + 1)
             else:
                 a, b = -(i + 1), i
-            self.splice_pages(files[a], files[b])
+            self.splice_pages(i + 1, files[a], files[b])
             flip = not flip
 
     def get_page_list(self):
@@ -83,7 +74,7 @@ class ComicSplicer:
         print(f"got { len(filenames) } pages.")
         return filenames
 
-    def splice_pages(self, left_page, right_page):
+    def splice_pages(self, spread_number, left_page, right_page):
         left_image = Image.open(self.input_dir + os.sep + "pages" + os.sep + left_page)
         right_image = Image.open(
             self.input_dir + os.sep + "pages" + os.sep + right_page
@@ -99,12 +90,18 @@ class ComicSplicer:
         self.page_spread.paste(left_image, (0, 0))
         self.page_spread.paste(right_image, (int(PAGE_WIDTH * DPI), 0))
 
+        spread_str = str(spread_number).zfill(3)
+
         self.page_spread.save(
-            self.output_dir + os.sep + "pages" + os.sep + "_spread_" + left_page
+            self.output_dir
+            + os.sep
+            + "pages"
+            + os.sep
+            + "spread_"
+            + spread_str
+            + left_page
         )
-        # left_image.save(self.output_dir + os.sep + "pages" + os.sep + left_page)
-        # right_image.save(self.output_dir + os.sep + "pages" + os.sep + right_page)
-        print(left_page, " ", right_page)
+        print(f"saving spread { spread_str } ( { left_page }, { right_page } )")
 
 
 def main(argv):
