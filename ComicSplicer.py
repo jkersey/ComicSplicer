@@ -30,6 +30,11 @@ class ComicSplicer:
         self.input_dir = input_dir
         self.output_dir = output_dir
 
+        try:
+            os.makedirs(self.output_dir + os.sep + "pages")
+        except FileExistsError:
+            pass
+
         self.page_spread = Image.new(
             "RGB", (int(PAGE_WIDTH * DPI * 2), int(PAGE_HEIGHT * DPI))
         )
