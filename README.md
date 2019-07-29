@@ -21,7 +21,7 @@ This is an alternative to lots of copying/pasting in an image editor.
 
 (Note, uses Python 3.6 because I find f-strings handy)
 
-> python ComicSplicer.py -i <input directory> -o <output_directory> 
+> python ComicSplicer.py -i < input directory > -o < output_directory > 
 
 Reads files in alphanumeric order from <input_directory>/pages/ and writes to <output_directory>/pages/
 
